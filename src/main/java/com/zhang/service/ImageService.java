@@ -102,7 +102,6 @@ public class ImageService {
         String remark = "温馨提示：以上信息均为保密信息，员工之间不要互相打听、泄露，谢谢！。";
         graphics.drawString(remark, startWidth, imageHeight - 10);
         File file = ResourceUtils.getFile("classpath:static/");
-        System.out.println(file.getAbsolutePath());
         ImageIO.write(image, "PNG", new File(file.getAbsolutePath()+"/"+person.getName()+".png"));
         return "http://localhost:8080/"+person.getName()+".png";
     }

@@ -3,6 +3,7 @@ package com.zhang.controller;
 import com.zhang.entity.Person;
 import com.zhang.service.ExcelService;
 import com.zhang.service.ImageService;
+import com.zhang.service.MailService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,8 @@ public class MainController {
     private ExcelService excelService;
     @Resource
     private ImageService imageService;
+    @Resource
+    private MailService mailService;
 
     @RequestMapping(value = "persons")
     public List<Person> getPersons(String date) {
@@ -47,6 +50,25 @@ public class MainController {
         }catch (IOException ex){
             System.err.println("IO异常");
             ex.printStackTrace();
+        }
+        return "test";
+    }
+
+    @RequestMapping(value = "email")
+    public String sendMail(String date){
+        try {
+            List<Person> persons = excelService.getPersons(date);
+            imageService.graphicsGeneration(persons.get(0));
+            mailService.sendMail(persons.get(0));
+        }catch (FileNotFoundException e){
+            System.err.println("文件不存在！");
+            e.printStackTrace();
+        }catch (IOException ex){
+            System.err.println("IO异常");
+            ex.printStackTrace();
+        }catch (Exception e){
+            System.err.println("未知异常");
+            e.printStackTrace();
         }
         return "test";
     }
